@@ -15,13 +15,14 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const SignupPage = () => {
-  const { isAuthenticated, signUp } = useAuth()
+  const { isAuthenticated, currentUser,  signUp } = useAuth()
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate(routes.home())
     }
   }, [isAuthenticated])
+
 
   // focus on username box on page load
   const usernameRef = useRef(null)
@@ -31,7 +32,7 @@ const SignupPage = () => {
 
   const onSubmit = async (data) => {
     const response = await signUp({
-      username: data.username,
+      username: data.email,
       password: data.password,
     })
 
@@ -41,7 +42,7 @@ const SignupPage = () => {
       toast.error(response.error)
     } else {
       // user is signed in automatically
-      toast.success('Welcome!')
+      toast.success('Welcome, please verify your email address!')
     }
   }
 
@@ -61,26 +62,30 @@ const SignupPage = () => {
               <div className="rw-form-wrapper">
                 <Form onSubmit={onSubmit} className="rw-form-wrapper">
                   <Label
-                    name="username"
+                    name="email"
                     className="rw-label"
                     errorClassName="rw-label rw-label-error"
                   >
-                    Username
+                    Email
                   </Label>
                   <TextField
-                    name="username"
+                    name="email"
                     className="rw-input"
                     errorClassName="rw-input rw-input-error"
                     ref={usernameRef}
                     validation={{
+                      pattern: {
+                        value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                        message: 'Invalid email address',
+                      },
                       required: {
                         value: true,
-                        message: 'Username is required',
+                        message: 'Email is required',
                       },
                     }}
                   />
 
-                  <FieldError name="username" className="rw-field-error" />
+                  <FieldError name="email" className="rw-field-error" />
 
                   <Label
                     name="password"

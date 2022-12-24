@@ -7465,6 +7465,7 @@ __metadata:
   dependencies:
     "@redwoodjs/api": 3.8.0
     "@redwoodjs/graphql-server": 3.8.0
+    nodemailer: ^6.8.0
   languageName: unknown
   linkType: soft
 
@@ -17414,6 +17415,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.8.0":
+  version: 6.8.0
+  resolution: "nodemailer@npm:6.8.0"
+  checksum: 6f8fd051ff33e1330903b0013f65a14a672731de8506a931a7012c582b1ea507257186244213108b966e30d41a297f8de9e295ace61a8f0a70222913255ad667
+  languageName: node
+  linkType: hard
+
 "nodemon@npm:2.0.20":
   version: 2.0.20
   resolution: "nodemon@npm:2.0.20"
@@ -23315,6 +23323,7 @@ __metadata:
     "@redwoodjs/forms": 3.8.0
     "@redwoodjs/router": 3.8.0
     "@redwoodjs/web": 3.8.0
+    humanize-string: 2.1.0
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
