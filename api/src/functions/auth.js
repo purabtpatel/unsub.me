@@ -1,7 +1,11 @@
+import { Prisma } from '@prisma/client'
 import { DbAuthHandler } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
+import { sendEmail } from 'src/lib/email'
+import { createAudit } from '../audits/audits'
 
+const nodemailer = require('nodemailer')
 export const handler = async (event, context) => {
   const forgotPasswordOptions = {
     // handler() is invoked after verifying that a user was found with the given
@@ -16,7 +20,31 @@ export const handler = async (event, context) => {
     // You could use this return value to, for example, show the email
     // address in a toast message so the user will know it worked and where
     // to look for the email.
-    handler: (user) => {
+
+
+    handler: async (user) => {
+      try{
+
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        })
+        const resetLink = `${process.env.APP_URL}/reset-password?resetToken=${user.resetToken}`
+        const message = {
+          from: process.env.SMTP_FROM,
+          to: user.email,
+          subject: 'Reset your password',
+          html: ` <p>Hi ${user.email},</p> <p>Someone requested a password reset for your account. If it was you, click the link below to reset your password. If it wasn't you, you can safely ignore this email.</p> <p><a href="${resetLink}">${resetLink}</a></p> <p>Thanks,</p> <p>Your friends at RedwoodJS</p> `,
+
+        }
+        await transporter.sendMail(message)
+      }catch(error){
+        console.log(error)
+      }
+
       return user
     },
 
