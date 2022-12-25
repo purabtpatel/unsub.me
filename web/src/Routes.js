@@ -16,6 +16,7 @@ import NavigationLayout from './layouts/NavigationLayout/NavigationLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/contact" page={ContactPage} name="contact" />
       <Set wrap={ScaffoldLayout} title="Audits" titleTo="audits" buttonLabel="New Audit" buttonTo="newAudit">
         <Route path="/audits/new" page={AuditNewAuditPage} name="newAudit" />
         <Route path="/audits/{id}/edit" page={AuditEditAuditPage} name="editAudit" />
