@@ -9,6 +9,8 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 
+import "./contactPage.css"
+
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
     createContact(input: $input) {
@@ -16,6 +18,7 @@ const CREATE_CONTACT = gql`
     }
   }
 `
+
 
 const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
@@ -32,8 +35,10 @@ const ContactPage = () => {
   return (
     <>
       <MetaTags title="Contact" description="Contact page" />
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
 
       <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+        <h1 className="contact-header">Contact Us</h1>
         <Label name="name" errorClassName="error">
           Name
         </Label>
