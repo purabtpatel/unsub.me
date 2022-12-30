@@ -10,6 +10,7 @@ import {
 } from '@redwoodjs/forms'
 
 import "./contactPage.css"
+import { routes } from '@redwoodjs/router'
 
 const CREATE_CONTACT = gql`
   mutation CreateContactMutation($input: CreateContactInput!) {
@@ -24,12 +25,13 @@ const ContactPage = () => {
   const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
     onCompleted: () => {
       toast.success('Thank you for your submission!')
+      routes.about()
     },
   })
 
   const onSubmit = (data) => {
     create({ variables: { input: data } })
-    console.log(data)
+
   }
 
   return (

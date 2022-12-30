@@ -23,6 +23,7 @@ model User {
   updatedAt           DateTime  @default(now()) @updatedAt
   Audit               Audit[]
   verified            Boolean   @default(false)
+  verificationToken   String?
 }
 
 model Audit {

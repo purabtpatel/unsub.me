@@ -33,6 +33,7 @@ export const schema = gql`
     salt: String
     resetToken: String
     resetTokenExpiresAt: DateTime
+    verified: Boolean
   }
 
   type Mutation {

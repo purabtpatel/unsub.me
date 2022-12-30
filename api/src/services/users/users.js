@@ -20,24 +20,34 @@ export const createUser = ({ input }) => {
     data: input,
   })
 }
-function sendTestEmail(emailAddress) {
-  const subject = 'Test Email'
+function sendTestEmail(emailAddress, verificationLink) {
+  const contactpageLink = `${process.env.APP_URL}/contact`
+  const subject = 'UnSub.me | Verify your email address'
   const text =
-    'This is a manually triggered test email.\n\n' +
-    'It was sent from a RedwoodJS application.'
+  'Hi there,\n\n' +
+  'Thanks for signing up for our service! In order to complete your registration, please verify your email address by clicking the link below:\n\n' +
+  `Verification link: ${verificationLink}\n\n` +
+  'If you have any questions or need help, please don\'t hesitate to reach out.\n\n' +
+  'Best regards,\n' +
+  '[Your company name]'
   const html =
-    'This is a manually triggered test email.<br><br>' +
-    'It was sent from a RedwoodJS application.'
+    `<p>Hi there,</p>
+    <p>Thanks for signing up for our service! In order to complete your registration, please verify your email address by clicking the button below:</p>
+    <p><a href="${verificationLink}" style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; color: #fff; background-color: #0077c9; border: 0; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;">Verify email</a></p>
+    <p>If you have any questions or need help, please don't hesitate to <a href="${contactpageLink}">reach out</a>.</p>
+    <p>Best regards,<br>
+    [Your company name]</p>`
   return sendEmail({ to: emailAddress, subject, text, html })
 }
 export const emailUser = async ({ id }) => {
   const user = await db.user.findUnique({
     where: { id },
   })
-  await sendTestEmail(user.email)
+  const verificationLink = `${process.env.APP_URL}/verify-email?token=${user.verificationToken}`
+  await sendTestEmail(user.email, verificationLink)
   await createAudit({
     input: {
-      user: { connect: { id } }, log: `Sent test email to user`,
+      user: { connect: { id } }, log: `Sent email to user`,
     },
   })
   return user

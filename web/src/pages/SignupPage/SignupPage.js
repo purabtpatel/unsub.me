@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
-
+import { useMutation } from '@redwoodjs/web'
 import { useAuth } from '@redwoodjs/auth'
 import {
   Form,
@@ -14,11 +14,30 @@ import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
+const EMAIL_USER_MUTATION = gql`
+  mutation EmailUserMutation($id: Int!) {
+    emailUser(id: $id) {
+      id
+    }
+  }
+`
+
 const SignupPage = () => {
   const { isAuthenticated, currentUser,  signUp } = useAuth()
 
+  const [emailUser] = useMutation(EMAIL_USER_MUTATION, {
+    onCompleted: () => {
+      toast.success('Verification email sent')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+
   useEffect(() => {
     if (isAuthenticated) {
+      emailUser({ variables: { id: currentUser.id } })
       navigate(routes.home())
     }
   }, [isAuthenticated])
