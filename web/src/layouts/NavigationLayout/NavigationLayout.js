@@ -5,21 +5,10 @@ const NavigationLayout = ({ children }) => {
   const { isAuthenticated, currentUser, logOut } = useAuth()
   return <>
     <header>
-      <div className="flex-between">
-
+      <div>
         <h1>
           <Link to={routes.home()}>UnSub.me</Link>
         </h1>
-        {isAuthenticated ? (
-          <div>
-            <span>Logged in as {currentUser.email}</span>
-            <button onClick={logOut}>Log out</button>
-          </div>
-        ) : (
-          <Link to={routes.login()}>Log in</Link>
-        )}
-
-
       </div>
       <nav>
         <ul>
@@ -32,10 +21,25 @@ const NavigationLayout = ({ children }) => {
           <li>
             <Link to={routes.contact()}>Contact</Link>
           </li>
+          <li>
+            {isAuthenticated ? (
+              <div>
+                <span>Logged in as {currentUser.email}</span>
+                <button onClick={logOut}>Log out</button>
+              </div>
+            ) : (
+              <Link to={routes.login()}>Log in</Link>
+            )}
+          </li>
         </ul>
       </nav>
     </header>
     <main>{children}</main>
+    <footer>
+      <div className="container">
+        <p>Copyright 2021 Email Manager Tool</p>
+      </div>
+    </footer>
   </>
 }
 

@@ -7,7 +7,17 @@ const HomePage = () => {
     <>
       <MetaTags title="Home" description="Home page" />
       <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-      Home
+      <div classname="container">
+        <main>
+          <div className="container">
+            <h1>Effortlessly manage your emails and subscriptions</h1>
+            <p>Our email manager tool helps you organize and clean your inbox more efficiently. Try it out for free today!</p>
+            <Link to={routes.signup()} className="cta-button">Sign up for free</Link>
+
+          </div>
+        </main>
+
+      </div>
     </>
   )
 }
