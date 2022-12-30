@@ -23,7 +23,7 @@ export const handler = async (event, context) => {
 
 
     handler: async (user) => {
-      try{
+      try {
 
         let transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
@@ -43,7 +43,7 @@ export const handler = async (event, context) => {
 
         }
         await transporter.sendMail(message)
-      }catch(error){
+      } catch (error) {
         console.log(error)
       }
 
@@ -133,11 +133,14 @@ export const handler = async (event, context) => {
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
     handler: ({ username, hashedPassword, salt, userAttributes }) => {
+      verificationToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
       return db.user.create({
         data: {
           email: username,
           hashedPassword: hashedPassword,
           salt: salt,
+          verificationToken: verificationToken,
           // name: userAttributes.name
         },
       })
@@ -194,6 +197,7 @@ export const handler = async (event, context) => {
     login: loginOptions,
     resetPassword: resetPasswordOptions,
     signup: signupOptions,
+
   })
 
   return await authHandler.invoke()
